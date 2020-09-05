@@ -68,10 +68,10 @@ class Raytracer(object):
         self.glViewport(0, 0, width, height)
 
     def glViewport(self, x, y, width, height):
-        self.vpX = x
-        self.vpY = y
-        self.vpWidth = width
-        self.vpHeight = height
+        self.vportx = x
+        self.vporty = y
+        self.vportwidth = width
+        self.vportheight = height
 
     def glClear(self):
         self.pixels = [ [ self.clear_color for x in range(self.width)] for y in range(self.height) ]
@@ -84,19 +84,19 @@ class Raytracer(object):
         self.pixels = [ [ texture.getColor(x / self.width, y / self.height) for x in range(self.width)] for y in range(self.height) ]
 
     def glVertex(self, x, y, color = None):
-        pixelX = ( x + 1) * (self.vpWidth  / 2 ) + self.vpX
-        pixelY = ( y + 1) * (self.vpHeight / 2 ) + self.vpY
+        nx = round(( x + 1) * (self.vportwidth  / 2 ) + self.vportx)
+        ny = round(( y + 1) * (self.vportheight / 2 ) + self.vporty)
 
-        if pixelX >= self.width or pixelX < 0 or pixelY >= self.height or pixelY < 0:
+        if nx >= self.width or nx < 0 or ny >= self.height or ny < 0:
             return
 
         try:
-            self.pixels[round(pixelY)][round(pixelX)] = color or self.curr_color
+            self.pixels[ny][nx] = color or self.curr_color
         except:
             pass
 
     def glVertex_coord(self, x, y, color = None):
-        if x < self.vpX or x >= self.vpX + self.vpWidth or y < self.vpY or y >= self.vpY + self.vpHeight:
+        if x < self.vportx or x >= self.vportx + self.vportwidth or y < self.vporty or y >= self.vporty + self.vportheight:
             return
 
         if x >= self.width or x < 0 or y >= self.height or y < 0:
@@ -206,7 +206,7 @@ class Raytracer(object):
                 Px *= r
                 Py *= t
 
-                #Nuestra camara siempre esta viendo hacia -Z
+                
                
                 directionp=(Px, Py, -1)
                 directionp=division(directionp, frobenius(directionp))
@@ -222,7 +222,7 @@ class Raytracer(object):
                         if intersect.distance < self.zbuffer[y][x]:
                             self.zbuffer[y][x] = intersect.distance
                             material = obj.material
-
+                #cuando hay un material predeterminado
                 if material is not None:
                     self.glVertex_coord(x, y, material.diffuse)
 
