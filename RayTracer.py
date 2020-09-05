@@ -18,6 +18,8 @@ coal = Material(diffuse = color(0, 0, 0))
 snow = Material(diffuse = color(1, 1, 1))
 carrot=Material(diffuse = color(1, 0.65, 0))
 eyes=Material(diffuse = color(0.90, 0.90, 0.90))
+pink_center=Material(diffuse = color(0.976, 0.38, 1))
+pink_bow=Material(diffuse = color(0.984, 0.6, 1))
 
 
 width = 500
@@ -48,6 +50,11 @@ r.scene.append( Sphere((-0.09, 0.8,  -4), 0.08, eyes) )
 r.scene.append( Sphere((0.09, 0.8,  -4), 0.08, eyes) )
 r.scene.append( Sphere((-0.09, 0.7,  -3.5), 0.03, coal) )
 r.scene.append( Sphere((0.09, 0.7,  -3.5), 0.03, coal) )
+
+#bow
+"""r.scene.append( Sphere((-0.06, 1.005,  -4.1), 0.08, pink_bow) )
+r.scene.append( Sphere((0, 1,  -4), 0.05, pink_center) )
+r.scene.append( Sphere((0.06, 1.005,  -4.1), 0.08, pink_bow) )"""
 
 r.rtRender()
 
