@@ -1,4 +1,10 @@
-# Carga un archivo OBJ
+"""
+Maria Ines Vasquez Figueroa
+18250
+Gráficas
+DR1 Spheres & Textures
+Carga OBJ
+"""
 
 import struct
 

@@ -1,14 +1,19 @@
+"""
+Maria Ines Vasquez Figueroa
+18250
+Gráficas
+RayTracer
+Libreria de operaciones matemáticas
+"""
 import struct
 import random
+from mathLib import *
 import numpy as np
-from numpy import matrix, cos, sin, tan
+from numpy import cos, sin, tan
+
 
 from obj import Obj
-from collections import namedtuple
 
-V2 = namedtuple('Point2', ['x', 'y'])
-V3 = namedtuple('Point3', ['x', 'y', 'z'])
-V4 = namedtuple('Point4', ['x', 'y', 'z','w'])
 
 def char(c):
     # 1 byte
@@ -25,20 +30,21 @@ def dword(d):
 def color(r, g, b):
     return bytes([int(b * 255), int(g * 255), int(r * 255)])
 
-def baryCoords(A, B, C, P):
+def baryCoords(Ax, Bx, Cx, Ay, By, Cy, Px, Py):
     # u es para la A, v es para B, w para C
     try:
-        u = ( ((B.y - C.y)*(P.x - C.x) + (C.x - B.x)*(P.y - C.y) ) /
-              ((B.y - C.y)*(A.x - C.x) + (C.x - B.x)*(A.y - C.y)) )
+        u = ( ((By - Cy)*(Px - Cx) + (Cx - Bx)*(Py - Cy) ) /
+              ((By - Cy)*(Ax - Cx) + (Cx - Bx)*(Ay - Cy)) )
 
-        v = ( ((C.y - A.y)*(P.x - C.x) + (A.x - C.x)*(P.y - C.y) ) /
-              ((B.y - C.y)*(A.x - C.x) + (C.x - B.x)*(A.y - C.y)) )
+        v = ( ((Cy - Ay)*(Px - Cx) + (Ax - Cx)*(Py - Cy) ) /
+              ((By - Cy)*(Ax - Cx) + (Cx - Bx)*(Ay - Cy)) )
 
         w = 1 - u - v
     except:
         return -1, -1, -1
 
     return u, v, w
+
 
 
 BLACK = color(0,0,0)
@@ -50,7 +56,7 @@ class Raytracer(object):
         self.clear_color = BLACK
         self.glCreateWindow(width, height)
 
-        self.camPosition = V3(0,0,0)
+        self.camPosition = (0,0,0)
         self.fov = 60
 
         self.scene = []
@@ -183,6 +189,7 @@ class Raytracer(object):
                 archivo.write(color(depth,depth,depth))
 
         archivo.close()
+    
 
     def rtRender(self):
         #pixel por pixel
@@ -200,13 +207,17 @@ class Raytracer(object):
                 Py *= t
 
                 #Nuestra camara siempre esta viendo hacia -Z
-                direction = V3(Px, Py, -1)
-                direction = direction / np.linalg.norm(direction)
+               
+                directionp=(Px, Py, -1)
+                directionp=division(directionp, frobenius(directionp))
+                """print(direction)
+                print(directionp)
+                print("--------------------------------")"""
 
                 material = None
 
                 for obj in self.scene:
-                    intersect = obj.ray_intersect(self.camPosition, direction)
+                    intersect = obj.ray_intersect(self.camPosition, directionp)
                     if intersect is not None:
                         if intersect.distance < self.zbuffer[y][x]:
                             self.zbuffer[y][x] = intersect.distance

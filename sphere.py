@@ -1,5 +1,14 @@
+"""
+Maria Ines Vasquez Figueroa
+18250
+Gráficas
+DR1 Spheres & Textures
+Sphere
+"""
+
 import numpy as np
-from gl import color
+from gl import *
+from mathLib import *
 
 
 WHITE = color(1,1,1)
@@ -37,17 +46,24 @@ class Sphere(object):
         #perpendicular entre el rayo y el centro de la esfera
         # d > radio, el rayo no intersecta
         #tca es el vector que va del orign al punto perpendicular al centro
-        L = np.subtract(self.center, orig)
-        tca = np.dot(L, dir)
-        l = np.linalg.norm(L) # magnitud de L
-        d = (l**2 - tca**2) ** 0.5
+        #L = np.subtract(self.center, orig)
+        Lp=subtract(self.center[0],orig[0],self.center[1],orig[1],self.center[2],orig[2])#funciona
+        
+       
+        tcap=dot(Lp,dir[0], dir[1], dir[2])#funciona
+        
+        
+        lp=frobenius(Lp) #funciona magnitud de L
+        
+       
+        d = (lp**2 - tcap**2) ** 0.5
         if d > self.radius:
             return None
 
         # thc es la distancia de P1 al punto perpendicular al centro
         thc = (self.radius ** 2 - d**2) ** 0.5
-        t0 = tca - thc
-        t1 = tca + thc
+        t0 = tcap - thc
+        t1 = tcap + thc
         if t0 < 0:
             t0 = t1
 
