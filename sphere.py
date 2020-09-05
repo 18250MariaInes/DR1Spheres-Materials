@@ -14,16 +14,13 @@ from mathLib import *
 WHITE = color(1,1,1)
 
 class Material(object):
-    # Un material es un conjunto de propiedades que determina como interactua la
-    # iluminacion con una superficie
-    # En raytracing, el color de un pixel es determinado por el material de la superficie
-    # que un rayo intercepta
+    # Un material como visto en Unity que rige como se comportara con la luz. Como los materiales de roca, ladrillo, entre otros
     def __init__(self, diffuse = WHITE):
-        # Diffuse es el color basico de un objeto. Cuando recibe luz, se esparce por igual en todas las direcciones.
+        # color pero se esparce cuando tiene luz
         self.diffuse = diffuse
 
 
-class Intersect(object):
+class Intersect(object): #función que devuelve la distancia de la intersección
     def __init__(self, distance):
         self.distance = distance
 
@@ -35,6 +32,7 @@ class Sphere(object):
         self.material = material
 
     def ray_intersect(self, orig, dir):
+        
         # Regresa falso o verdadero si hace interseccion con una esfera
 
         # Formula para un punto en un rayo
@@ -52,10 +50,8 @@ class Sphere(object):
        
         tcap=dot(Lp,dir[0], dir[1], dir[2])#funciona
         
-        
         lp=frobenius(Lp) #funciona magnitud de L
         
-       
         d = (lp**2 - tcap**2) ** 0.5
         if d > self.radius:
             return None
